@@ -1,3 +1,4 @@
+import { Transform, TransformFnParams } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 
@@ -10,10 +11,12 @@ export class Postagem{
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Transform(({ value }: TransformFnParams) => value?.trim()) // Utilizado para tirar espaço em branco.
     @IsNotEmpty() // Validação dos dados do objeto - É DA APLICAÇÃO E NÃO DO BANCO DE DADOS
     @Column({length: 100, nullable: false}) // Indicando que será um VARCHAR(100) e NOT NULL
     titulo: string; 
-
+    
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     @IsNotEmpty()
     @Column({length: 1000, nullable: false}) 
     texto: string;

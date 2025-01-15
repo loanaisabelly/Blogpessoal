@@ -1,9 +1,9 @@
 // Utilizado para criar todos os Metodos do CRUD 
 
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Postagem } from "../entities/postagem.entity";
-import { Repository } from "typeorm";
+import { DeleteResult, ILike, Repository } from "typeorm";
 
 /**Utilizado para informar que a classe é uma classe de serviços, onde pode 
  * ser injetada dentro de outras classes. */ 
@@ -20,4 +20,49 @@ export class PostagemService{
     async findALL(): Promise<Postagem[]>{
         return this.postagemRepository.find(); // SELECT * FROM TB_postagens;
     }
+
+    async findById(id: number): Promise<Postagem> {
+        // Dispara um SELECT * FROM tb_postagens WHERE id = ?;
+        const postagem = await this.postagemRepository.findOne({
+            where: {
+                id
+            }
+        })
+        // Verifica se a postagem existe e dessa maneira, irá mostrar a mensagem 
+        if(!postagem)
+            throw new HttpException('Postagem não encontrada!', HttpStatus.NOT_FOUND)
+        return postagem; // Caso exista, irá retornar a postagem
+    }
+
+
+    async findByTitulo(titulo: string): Promise<Postagem[]>{
+        return this.postagemRepository.find(); 
+        where:{
+            titulo: ILike(`%${titulo}%`)
+        }
+    }
+
+    async create(postagem: Postagem): Promise<Postagem>{
+        //INSERT INTO tb_postagens (titulo, texto) VALEUS(?,?)
+        return await this.postagemRepository.save(postagem);
+    }
+
+
+    async update(postagem: Postagem): Promise<Postagem>{
+        await this.findById(postagem.id) // UPDATE tb_postagens SET titulo = postagem.titulo, 
+        // texto = postagem.texto, 
+        // data =CURRENT_TIMESTAMP()  Where id = postagem.id
+        return await this.postagemRepository.save(postagem);
+    }
+
+
+    async delete(id: number): Promise<DeleteResult>{
+        await this.findById(id)
+        // DELETE tb_postagens WHERE id = ? 
+        return await this.postagemRepository.delete(id)
+    }
+
+
+
+
 }
