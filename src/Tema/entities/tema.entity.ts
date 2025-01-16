@@ -1,5 +1,7 @@
+import { Transform, TransformFnParams } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Postagem } from "../../postagem/entities/postagem.entity";
 
 @Entity({name: "tb_temas"})
 export class Tema{
@@ -7,11 +9,13 @@ export class Tema{
     @PrimaryGeneratedColumn()
     id: number
 
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     @IsNotEmpty()
     @Column({length: 255, nullable: false})
     descricao: string
 
-
-
-
+   @OneToMany(() => Postagem, (Postagem) => Postagem.tema)
+   postagem: Postagem[];
+    
+    
 }

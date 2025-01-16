@@ -1,6 +1,7 @@
 import { Transform, TransformFnParams } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { Tema } from "../../Tema/entities/tema.entity";
 
 // No Entity é feito a estrutura da tabela do banco de dados
 
@@ -24,7 +25,8 @@ export class Postagem{
     @UpdateDateColumn() // Automaticamente será gerado através do relogio da maquina
     data: Date;
 
-
-
+    @ManyToOne(() => Tema, (tema) => tema.postagem, {
+    onDelete: "CASCADE"})
+    tema: Tema; 
 
 }
