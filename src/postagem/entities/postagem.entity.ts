@@ -2,6 +2,7 @@ import { Transform, TransformFnParams } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { Tema } from "../../Tema/entities/tema.entity";
+import { Usuario } from "../../ususario/entities/usuario.entity";
 
 // No Entity é feito a estrutura da tabela do banco de dados
 
@@ -28,5 +29,11 @@ export class Postagem{
     @ManyToOne(() => Tema, (tema) => tema.postagem, {
     onDelete: "CASCADE"})
     tema: Tema; 
+
+
+    @ManyToOne(() => Usuario, (usuario) => usuario.postagem, {
+        onDelete: "CASCADE"
+    })
+    usuario: Usuario
 
 }
