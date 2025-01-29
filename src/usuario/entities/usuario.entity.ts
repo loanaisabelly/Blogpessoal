@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator"
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Postagem } from "../../postagem/entities/postagem.entity"
 import { Transform, TransformFnParams } from "class-transformer"
 
@@ -7,14 +7,14 @@ import { Transform, TransformFnParams } from "class-transformer"
 @Entity({name: "tb_usuarios"})
 export class Usuario {
 
-    @PrimaryGeneratedColumn() 
+    @PrimaryGeneratedColumn()  
     id: number
 
     @Transform(({ value }: TransformFnParams) => value?.trim())
     @IsNotEmpty()
     @Column({length: 255, nullable: false}) 
     nome: string
-    
+
     @Transform(({ value }: TransformFnParams) => value?.trim())
     @IsEmail()
     @IsNotEmpty()
@@ -27,13 +27,11 @@ export class Usuario {
     @Column({length: 255, nullable: false }) 
     senha: string
 
-    @Transform(({ value }: TransformFnParams) => value?.trim())
     @Column({length: 5000 }) 
+   
     foto: string
 
     @OneToMany(() => Postagem, (postagem) => postagem.usuario)
     postagem: Postagem[]
 
-
 }
-

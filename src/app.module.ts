@@ -6,9 +6,10 @@ import { Postagem } from './postagem/entities/postagem.entity';
 import { PostagemModule } from './postagem/postagem.module';
 import { Tema } from './Tema/entities/tema.entity';
 import { TemaModule } from './Tema/tema.module';
-import { AuthModule } from './auth/entitites/auth.module';
-import { UsuarioModule } from './ususario/usuario.module';
-import { Usuario } from './ususario/entities/usuario.entity';
+import { UsuarioModule } from './usuario/usuario.module';
+import { Usuario } from './usuario/entities/usuario.entity';
+import { AuthModule } from './auth/auth.module';
+
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { Usuario } from './ususario/entities/usuario.entity';
       database: 'db_blogpessoal',
       entities: [Postagem,Tema, Usuario],
       synchronize: true,
-      logging: true,
+     // logging: true,
     }),
     PostagemModule, 
     TemaModule,
